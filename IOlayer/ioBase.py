@@ -1,38 +1,39 @@
 from abc import ABCMeta
 
 
+class IoBase:
+    __metaclass__ = ABCMeta
+
+    def get_all_inputs(self):
+        pass
+
+    def get_all_outputs(self):
+        pass
+
+
 class InputBase:
     __metaclass__ = ABCMeta
 
     def __init__(self):
-        self.name
-        self.id
+        self.name = "InputBase"
+        self.inputId = 0
 
-    def read_integer(self):
-        raise NotImplemented
-
-    def read_float(self):
-        raise NotImplemented
-
-    def read_bool(self):
-        raise NotImplemented
-
-    def read_raw(self):
-        raise NotImplemented
+    def read(self):
+        return 0
 
 
 class OutputBase:
     __metaclass__ = ABCMeta
 
     def __init__(self):
-        self.name
-        self.id
+        self.name = "OutputBase"
+        self.inputId = 0
 
     def write_bool(self):
-        raise NotImplemented
+        pass
 
     def write_int(self):
-        raise NotImplemented
+        pass
 
     def write_float(self):
-        raise NotImplemented
+        pass

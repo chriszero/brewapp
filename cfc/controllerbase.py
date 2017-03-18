@@ -18,6 +18,10 @@ class ControllerBase(object):
         return self.setpoint - self.actual
 
 
+class ManualController(ControllerBase):
+    pass
+
+
 class Hysteresis(ControllerBase):
 
     def __init__(self):
