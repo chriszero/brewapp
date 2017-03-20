@@ -1,4 +1,5 @@
-from actors.digitaloutput import DigitalOutput
+from actors.digitaloutput import DigitalOutput, AnalogOutput
+from controlstep import OutputNode
 
 
 class HeatingElement(DigitalOutput):
@@ -8,18 +9,25 @@ class HeatingElement(DigitalOutput):
         self.power = 1800
 
 
-class RegulatedHeatingElement(HeatingElement):
+class RegulatedHeatingElement(AnalogOutput):
 
     def __init__(self):
         super().__init__()
         self.name = "Regulated heating element"
-
-    def setPower(self, power):
-        return True
+        self.power = 1800
 
 
-class MultiStageHeatingElement(object):
+class MultiStageHeatingElement(OutputNode):
 
     def __init__(self):
+        super().__init__()
         self.name = "Multistage heating element"
-        self.heatingelements = []
+        self.heatingelements = []  # type: HeatingElement
+
+    @property
+    def output_value(self):
+        return
+
+    @output_value.setter
+    def output_value(self, value):
+        pass

@@ -1,9 +1,11 @@
 from IOlayer.ioBase import InputBase
 from time import monotonic
+from controlstep import InputNode
 
 
-class AnalogInput(object):
+class AnalogInput(InputNode):
     def __init__(self):
+        super().__init__()
         self.name = "Analog input"
 
         self._input = None  # type: InputBase
@@ -54,3 +56,7 @@ class AnalogInput(object):
             self.__cachedValue = self.input.read()
 
         return self.__cachedValue
+
+    @property
+    def input_value(self):
+        return self.read_scaled()

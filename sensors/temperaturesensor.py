@@ -25,5 +25,9 @@ class TemperatureSensor(AnalogInput):
         """
         return "{} {}".format(self.temperature, UnitConversion.target_unit_temperature())
 
+    @property
+    def input_value(self):
+        return self.temperature
+
     def __str__(self):
         return "{} [{}]".format(self.name, self.temperature_with_unit)

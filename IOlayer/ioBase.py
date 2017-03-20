@@ -1,8 +1,5 @@
-from abc import ABCMeta
-
 
 class IoBase:
-    __metaclass__ = ABCMeta
 
     def get_all_inputs(self):
         pass
@@ -12,7 +9,6 @@ class IoBase:
 
 
 class InputBase:
-    __metaclass__ = ABCMeta
 
     def __init__(self):
         self.name = "InputBase"
@@ -23,17 +19,34 @@ class InputBase:
 
 
 class OutputBase:
-    __metaclass__ = ABCMeta
 
     def __init__(self):
         self.name = "OutputBase"
         self.inputId = 0
 
-    def write_bool(self):
+    def write(self, value):
         pass
 
-    def write_int(self):
-        pass
+    @property
+    def state(self):
+        return 0
 
-    def write_float(self):
-        pass
+
+class DummyInput(InputBase):
+
+    def __init__(self):
+        super().__init__()
+        self.input = 0
+
+    def read(self):
+        return self.input
+
+
+class DummyOutput(OutputBase):
+
+    def __init__(self):
+        super().__init__()
+        self.out = 0
+
+    def write(self, value):
+        self.out = value

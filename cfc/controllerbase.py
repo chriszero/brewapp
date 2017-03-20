@@ -1,3 +1,5 @@
+from controlstep import ControlNode
+
 
 class ControllerBase(object):
 
@@ -5,11 +7,6 @@ class ControllerBase(object):
         self.name = "Controller base"
         self.setpoint = 0
         self.actual = 0
-        self.min = 0
-        self.max = 255
-
-    def setactual(self, actual):
-        self.actual = actual
 
     def set_setpoint(self, setpoint):
         self.setpoint = setpoint
@@ -18,18 +15,23 @@ class ControllerBase(object):
         return self.setpoint - self.actual
 
 
-class ManualController(ControllerBase):
-    pass
+class ManualController(ControllerBase, ControlNode):
+
+    def work(self):
+        pass
 
 
-class Hysteresis(ControllerBase):
+class Hysteresis(ControllerBase, ControlNode):
 
     def __init__(self):
         super().__init__()
-        self.hysteresis = 0
+        self.hysteresis = 2.0
 
-    def compute(self, setpoint, actual):
-        self.set_setpoint(setpoint)
-        self.setactual(actual)
-        return 0
+    def work(self):
+        self.actual = self.input.input_value
 
+        if self.actual < self.setpoint + self.hysteresis:
+            self.output.output_value = True
+
+        elif self.actual > self.setpoint:
+            self.output.output_value = False
