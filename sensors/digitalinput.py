@@ -5,7 +5,6 @@ class DigitalInput(object):
         self.name = "Digital input"
         self.__callbacks = []
 
-
     def read(self):
         return True
 

@@ -1,5 +1,6 @@
-from IOlayer.ioBase import OutputBase
-from controlstep import OutputNode
+from iolayer.ioBase import OutputBase
+from controllers.scaler import Scale
+from basic_nodes import OutputNode
 
 
 class DigitalOutput(OutputNode):
@@ -46,9 +47,7 @@ class AnalogOutput(DigitalOutput):
         self._outputValue = 0
         self._scaledOutputValue = 0
 
-        self._scaleInMax = 100
-        self._scaledOutMin = 0
-        self._scaleOutMax = 255
+        self.scale = Scale(scale_in_max=100, scale_out_max=255)
 
     @property
     def output_value(self):
@@ -65,4 +64,4 @@ class AnalogOutput(DigitalOutput):
 
     def _scale_output(self, value):
         value = float(value)
-        return (self._scaleOutMax - self._scaledOutMin) * value / self._scaleInMax + self._scaledOutMin
+        return self.scale.output(value)

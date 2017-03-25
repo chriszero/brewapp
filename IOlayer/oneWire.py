@@ -1,4 +1,4 @@
-from IOlayer.ioBase import IoBase, InputBase, OutputBase
+from iolayer.ioBase import IoBase, InputBase, OutputBase
 from os import path, listdir
 
 class OneWireBase(object):

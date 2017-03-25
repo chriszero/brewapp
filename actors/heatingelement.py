@@ -1,20 +1,20 @@
 from actors.digitaloutput import DigitalOutput, AnalogOutput
-from controlstep import OutputNode
+from basic_nodes import OutputNode
 
 
 class HeatingElement(DigitalOutput):
-    def __init__(self):
+    def __init__(self, name="Heating element"):
         super().__init__()
-        self.name = "Heating element"
+        self.name = name
         self.power = 1800
 
 
 class RegulatedHeatingElement(AnalogOutput):
 
-    def __init__(self):
+    def __init__(self, name="Regulated heating element"):
         super().__init__()
-        self.name = "Regulated heating element"
         self.power = 1800
+        self.name = name
 
 
 class MultiStageHeatingElement(OutputNode):

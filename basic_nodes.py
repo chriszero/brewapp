@@ -1,52 +1,4 @@
-from time import monotonic, sleep
-
-
-class ControlStep(object):
-
-    def __init__(self):
-        self.name = "Step"
-        self.controls = []  # type: List[ControlNode]
-        self.conditions = []  # type: List[ConditionNode]
-        self.proceedToNextStep = False
-
-    def work(self):
-        """
-        
-        :return: True if the conditions for this step are met
-        """
-        for cntrl in self.controls:
-            cntrl.work()
-
-        """
-        All conditions are OR
-        """
-        for cond in self.conditions:
-            cond.start()
-            if cond.condition_met:
-                print("Condition is met: [{}]", cond)
-                self.proceedToNextStep = True
-
-        return self.proceedToNextStep
-
-
-class ControlStepManager(object):
-
-    def __init__(self):
-        self.steps = []  # type: List[ControlStep]
-        self.actualStepIndex = 0
-
-    def do_work(self):
-        while True:
-            if self.steps[self.actualStepIndex].work():
-                self.actualStepIndex += 1
-
-            if self.actualStepIndex > len(self.steps):
-                self.actualStepIndex = -1
-                break
-
-            sleep(1)
-
-        print("All Steps done...")
+from time import monotonic
 
 
 class BaseNode(object):
@@ -89,7 +41,19 @@ class ControlNode(BaseNode):
         self._outputNode = None  # type: OutputNode
 
     def work(self):
+        """
+        override to implement your controller logic, it's called once every cycle
+        :return: 
+        """
         pass
+
+    def stop(self):
+        """
+        Stops control, sets output to False, is called before next step
+        override if the controller implementation require something special
+        :return: 
+        """
+        self.output.output_value = False
 
     @property
     def input(self) -> InputNode:
@@ -129,10 +93,10 @@ class ConditionNode(BaseNode):
 
 class TimeConditionNode(ConditionNode):
 
-    def __init__(self):
+    def __init__(self, timeseconds=0):
         super().__init__()
         self.name = "TimedConditionNode"
-        self._timeSeconds = 0
+        self._timeSeconds = timeseconds
         self._timeStarted = -1
 
     def start(self):
@@ -167,11 +131,11 @@ class TimeConditionNode(ConditionNode):
 
 class ValueConditionNode(ConditionNode):
 
-    def __init__(self):
+    def __init__(self, value=0, inputnode=None):
         super().__init__()
         self.name = "ValueConditionNode"
-        self._inputNode = None  # type: InputNode
-        self._conditionValue = 0
+        self._inputNode = inputnode  # type: InputNode
+        self._conditionValue = value
 
     @property
     def condition_value(self):
@@ -200,3 +164,21 @@ class ValueConditionNode(ConditionNode):
                 state = state and self.booleanAnd.condition_met
 
         return state
+
+
+class ManualConditionNode(ConditionNode):
+
+    def __init__(self):
+        super().__init__()
+        self.name = "ManualConditionNode"
+        self._conditionMet = False
+
+    def condition_met(self):
+        state = self._conditionMet
+        if self.booleanAnd:
+            state = state and self.booleanAnd.condition_met
+
+        return state
+
+    def set_condition_met(self, value=True):
+        self._conditionMet = bool(value)

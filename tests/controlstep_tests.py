@@ -1,8 +1,8 @@
 import unittest
-from IOlayer.ioBase import DummyInput, DummyOutput
+from iolayer.ioBase import DummyInput, DummyOutput
 from actors.digitaloutput import DigitalOutput
-from cfc.controllerbase import Hysteresis
-from controlstep import ValueConditionNode, TimeConditionNode
+from controllers.controllerbase import Hysteresis
+from basic_nodes import ValueConditionNode, TimeConditionNode
 from sensors.temperaturesensor import TemperatureSensor
 
 from time import sleep

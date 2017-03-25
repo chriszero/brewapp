@@ -1,6 +1,8 @@
-from IOlayer.ioBase import InputBase
+from iolayer.ioBase import InputBase
 from time import monotonic
-from controlstep import InputNode
+
+from controllers.scaler import Scale
+from basic_nodes import InputNode
 
 
 class AnalogInput(InputNode):
@@ -9,11 +11,7 @@ class AnalogInput(InputNode):
         self.name = "Analog input"
 
         self._input = None  # type: InputBase
-        self._scaleInMin = 0
-        self._scaleInMax = 1000.0
-        self._scaleOutMin = 0
-        self._scaleOutMax = 1.0
-
+        self.scale = Scale(scale_in_max=1000.0, scale_out_max=1.0)
         self.cacheTime = 1000  # in ms
         self.__nextRead = monotonic() * 1000
         self.__cachedValue = 0
@@ -41,8 +39,7 @@ class AnalogInput(InputNode):
         :return: float 
         """
         val = self.read() * 1.0
-        scaled = (self._scaleOutMax - self._scaleOutMin) / (self._scaleInMax - self._scaleInMin) * val \
-            - self._scaleInMin + self._scaleOutMin
+        scaled = self.scale.input(val)
         return scaled
 
     def read(self):

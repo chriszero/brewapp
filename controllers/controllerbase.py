@@ -1,4 +1,4 @@
-from controlstep import ControlNode
+from basic_nodes import ControlNode
 
 
 class ControllerBase(object):
@@ -17,15 +17,32 @@ class ControllerBase(object):
 
 class ManualController(ControllerBase, ControlNode):
 
+    def __init__(self, name="Manual Controller", start_state=False):
+        super().__init__()
+        self.name = name
+        self.setpoint = start_state
+
     def work(self):
-        pass
+        self.output.output_value = self.setpoint
+
+    def on(self):
+        self.setpoint = True
+
+    def off(self):
+        self.setpoint = False
+
+    def set_value(self, value):
+        self.setpoint = value
 
 
 class Hysteresis(ControllerBase, ControlNode):
+    """
+    Simple hysteresis controller
+    """
 
-    def __init__(self):
+    def __init__(self, hysteresis=1.0):
         super().__init__()
-        self.hysteresis = 2.0
+        self.hysteresis = hysteresis
 
     def work(self):
         self.actual = self.input.input_value
