@@ -39,6 +39,7 @@ class ControlNode(BaseNode):
         super().__init__()
         self._inputNode = None  # type: InputNode
         self._outputNode = None  # type: OutputNode
+        self._setpoint = 0
 
     def work(self):
         """
@@ -70,6 +71,14 @@ class ControlNode(BaseNode):
     @output.setter
     def output(self, value: OutputNode):
         self._outputNode = value
+
+    @property
+    def setpoint(self):
+        return self._setpoint
+
+    @setpoint.setter
+    def setpoint(self, value):
+        self._setpoint = value
 
 
 class ConditionNode(BaseNode):

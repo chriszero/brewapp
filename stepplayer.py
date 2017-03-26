@@ -1,5 +1,4 @@
 from time import sleep
-
 from basic_nodes import InputNode, ControlNode, OutputNode, ValueConditionNode, TimeConditionNode, ManualConditionNode
 
 
@@ -40,6 +39,7 @@ class ControlStepPlayer(object):
         """
         controller.input = input
         controller.output = output
+        controller.setpoint = value
 
         value_cond = timed_cond = manual_cond = None
         if value:
